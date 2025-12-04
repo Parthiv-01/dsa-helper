@@ -214,7 +214,8 @@ def show_learning_path_view():
             st.markdown("---")
             
             for idx, problem in enumerate(problems):
-                render_problem_card(problem, context=f"lp_{path_key}_{idx}")
+                # Use problem ID in context to ensure uniqueness
+                render_problem_card(problem, context=f"lp_{path_key}_pid{problem['id']}")
 
 def show_all_problems_view():
     st.header("📋 All Problems")
@@ -248,15 +249,21 @@ def show_all_problems_view():
     total_pages = (len(problems) + items_per_page - 1) // items_per_page
     
     if total_pages > 1:
-        page = st.number_input("Page", min_value=1, max_value=total_pages, value=1, step=1)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            page = st.number_input("Page", min_value=1, max_value=total_pages, value=1, step=1, key="all_problems_page")
         start_idx = (page - 1) * items_per_page
         end_idx = start_idx + items_per_page
         problems_to_show = problems[start_idx:end_idx]
+        
+        st.caption(f"Showing problems {start_idx + 1}-{min(end_idx, len(problems))} of {len(problems)}")
     else:
         problems_to_show = problems
     
     for idx, problem in enumerate(problems_to_show):
-        render_problem_card(problem, context=f"all_{idx}")
+        # Use actual index in full list for unique context
+        actual_idx = problems.index(problem) if problem in problems else idx
+        render_problem_card(problem, context=f"all_{actual_idx}")
 
 def show_by_topic_view():
     st.header("📂 Problems by Topic")
@@ -282,7 +289,8 @@ def show_by_topic_view():
         
         with st.expander(f"**{topic}** - {solved_in_topic}/{total_in_topic} solved", expanded=False):
             for idx, problem in enumerate(topic_problems):
-                render_problem_card(problem, context=f"topic_{topic}_{idx}", compact=True)
+                # Use problem ID to ensure uniqueness across topics
+                render_problem_card(problem, context=f"topic_{topic.replace(' ', '_')}_pid{problem['id']}", compact=True)
 
 def show_bookmarked_view():
     st.header("🔖 Bookmarked Problems")
@@ -299,7 +307,8 @@ def show_bookmarked_view():
     st.markdown(f"**{len(problems)} bookmarked problems**")
     
     for idx, problem in enumerate(problems):
-        render_problem_card(problem, context=f"bookmark_{idx}")
+        # Use problem ID for unique keys in bookmarks
+        render_problem_card(problem, context=f"bookmark_pid{problem['id']}")
 
 def show_recommendations_view():
     st.header("💡 Recommended for You")
@@ -315,7 +324,8 @@ def show_recommendations_view():
     st.caption("These are high-priority problems based on your progress and difficulty level.")
     
     for i, problem in enumerate(recommended):
-        render_problem_card(problem, context=f"rec_{i}")
+        # Use problem ID for unique keys in recommendations
+        render_problem_card(problem, context=f"rec_pid{problem['id']}")
 
 def show_analytics_view():
     st.header("📊 Analytics Dashboard")
@@ -427,9 +437,11 @@ def render_problem_card(problem, context="default", compact=False):
     is_solved = problem['id'] in data_manager.progress['solved_problems']
     is_bookmarked = problem['id'] in data_manager.progress['bookmarked_problems']
     
-    # Unique keys
-    solve_key = f"solve_{context}_{problem['id']}"
-    bookmark_key = f"bookmark_{context}_{problem['id']}"
+    # Generate unique keys with view mode to prevent duplicates across views
+    view_mode = st.session_state.get('view_mode', 'default').replace(' ', '_')
+    unique_id = f"{view_mode}_{context}_{problem['id']}"
+    solve_key = f"solve_{unique_id}"
+    bookmark_key = f"bookmark_{unique_id}"
     
     with st.container():
         col1, col2, col3, col4, col5 = st.columns([0.4, 3, 1, 0.8, 0.8])
@@ -489,8 +501,8 @@ def render_problem_card(problem, context="default", compact=False):
                         st.markdown(f"{i}. {hint}")
             
             with st.expander("📝 My Notes"):
-                note_key = f"note_{context}_{problem['id']}"
-                save_key = f"save_{context}_{problem['id']}"
+                note_key = f"note_{unique_id}"
+                save_key = f"save_{unique_id}"
                 
                 note = data_manager.get_note(problem['id'])
                 new_note = st.text_area(
