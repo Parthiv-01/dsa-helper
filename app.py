@@ -42,10 +42,13 @@ st.markdown("""
         background: #e3f2fd;
         color: #1976d2;
     }
+    .stProgress > div > div > div > div {
+        background: linear-gradient(to right, #667eea, #764ba2);
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize Data Manager
+# Initialize Data Manager with caching for better performance
 @st.cache_resource
 def get_data_manager():
     return DataManager()
@@ -166,6 +169,19 @@ def render_sidebar():
                 'show_unsolved': show_unsolved,
                 'solved_ids': data_manager.progress['solved_problems']
             }
+        
+        # Export option
+        if selected_view == "📊 Analytics":
+            st.markdown("---")
+            st.markdown("### 📥 Export")
+            if st.button("Export Progress CSV"):
+                csv_data = export_progress_to_csv(data_manager)
+                st.download_button(
+                    label="Download CSV",
+                    data=csv_data,
+                    file_name=f"leetcode_progress_{datetime.now().strftime('%Y%m%d')}.csv",
+                    mime="text/csv"
+                )
 
 def show_learning_path_view():
     st.header("🎯 Structured Learning Path")
@@ -185,7 +201,7 @@ def show_learning_path_view():
         
         with st.expander(
             f"📚 {path_data['name']} - {solved_in_path}/{total_in_path} completed",
-            expanded=(completion < 100)
+            expanded=(completion < 100 and completion >= 0)
         ):
             st.markdown(f"*{path_data['description']}*")
             
@@ -227,7 +243,19 @@ def show_all_problems_view():
     
     st.markdown(f"**Showing {len(problems)} problems**")
     
-    for idx, problem in enumerate(problems):
+    # Pagination for better performance with many problems
+    items_per_page = 20
+    total_pages = (len(problems) + items_per_page - 1) // items_per_page
+    
+    if total_pages > 1:
+        page = st.number_input("Page", min_value=1, max_value=total_pages, value=1, step=1)
+        start_idx = (page - 1) * items_per_page
+        end_idx = start_idx + items_per_page
+        problems_to_show = problems[start_idx:end_idx]
+    else:
+        problems_to_show = problems
+    
+    for idx, problem in enumerate(problems_to_show):
         render_problem_card(problem, context=f"all_{idx}")
 
 def show_by_topic_view():
@@ -262,7 +290,7 @@ def show_bookmarked_view():
     bookmarked_ids = data_manager.progress['bookmarked_problems']
     
     if not bookmarked_ids:
-        st.info("📌 No bookmarked problems yet!")
+        st.info("📌 No bookmarked problems yet! Use the ⭐ button to bookmark important problems.")
         return
     
     problems = [data_manager.get_problem_by_id(pid) for pid in bookmarked_ids]
@@ -279,10 +307,12 @@ def show_recommendations_view():
     recommended = get_recommended_problems(data_manager, data_manager.progress, limit=10)
     
     if not recommended:
-        st.success("🎉 You've solved all high-priority problems!")
+        st.success("🎉 You've solved all high-priority problems! Keep exploring more challenges.")
+        st.info("💪 Try solving Medium and Hard problems to further sharpen your skills!")
         return
     
     st.markdown(f"**Top {len(recommended)} problems to solve next:**")
+    st.caption("These are high-priority problems based on your progress and difficulty level.")
     
     for i, problem in enumerate(recommended):
         render_problem_card(problem, context=f"rec_{i}")
@@ -332,8 +362,10 @@ def show_analytics_view():
                 'Easy': '#00b8a9',
                 'Medium': '#f8b500',
                 'Hard': '#e63946'
-            }
+            },
+            hole=0.4
         )
+        fig.update_traces(textposition='inside', textinfo='percent+label')
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
@@ -346,10 +378,49 @@ def show_analytics_view():
                 'Solved': list(topic_stats.values())
             }).sort_values('Solved', ascending=False).head(10)
             
-            fig = px.bar(topic_data, x='Solved', y='Topic', orientation='h')
+            fig = px.bar(
+                topic_data, 
+                x='Solved', 
+                y='Topic', 
+                orientation='h',
+                color='Solved',
+                color_continuous_scale='viridis'
+            )
+            fig.update_layout(showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.info("Start solving to see topic stats")
+            st.info("Start solving problems to see topic statistics")
+    
+    # Progress over time (if there's solve history)
+    if data_manager.progress.get('solve_history'):
+        st.markdown("---")
+        st.subheader("📈 Progress Over Time")
+        
+        solve_history = data_manager.progress['solve_history']
+        dates = [datetime.fromisoformat(entry['timestamp']).date() for entry in solve_history]
+        
+        # Count problems solved per day
+        date_counts = {}
+        for date in dates:
+            date_counts[date] = date_counts.get(date, 0) + 1
+        
+        if date_counts:
+            progress_df = pd.DataFrame({
+                'Date': list(date_counts.keys()),
+                'Problems Solved': list(date_counts.values())
+            }).sort_values('Date')
+            
+            fig = px.line(
+                progress_df, 
+                x='Date', 
+                y='Problems Solved',
+                markers=True
+            )
+            fig.update_layout(
+                xaxis_title="Date",
+                yaxis_title="Problems Solved"
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
 def render_problem_card(problem, context="default", compact=False):
     """Render a problem card"""
@@ -427,11 +498,12 @@ def render_problem_card(problem, context="default", compact=False):
                     value=note,
                     key=note_key,
                     height=100,
-                    label_visibility="collapsed"
+                    label_visibility="collapsed",
+                    placeholder="Write your approach, key insights, or tricky parts..."
                 )
                 if st.button("Save Note", key=save_key):
                     data_manager.save_note(problem['id'], new_note)
-                    st.success("Saved!")
+                    st.success("✅ Note saved!")
         
         st.markdown("---")
 
