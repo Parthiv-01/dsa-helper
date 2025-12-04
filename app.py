@@ -5,7 +5,6 @@ import plotly.graph_objects as go
 from data_manager import DataManager
 from utils import *
 from datetime import datetime
-import uuid
 
 # Page Configuration
 st.set_page_config(
@@ -34,17 +33,6 @@ st.markdown("""
         margin: 1rem 0;
         border-left: 4px solid #667eea;
     }
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1rem;
-        border-radius: 8px;
-        color: white;
-    }
-    div[data-testid="stExpander"] {
-        background: #f8f9fa;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-    }
     .tag {
         display: inline-block;
         padding: 4px 12px;
@@ -66,7 +54,7 @@ data_manager = get_data_manager()
 
 # Initialize Session State
 if 'view_mode' not in st.session_state:
-    st.session_state.view_mode = 'Learning Path'
+    st.session_state.view_mode = '🎯 Learning Path'
 
 def main():
     # Header
@@ -85,7 +73,7 @@ def main():
     # Sidebar
     render_sidebar()
     
-    # Main Content based on view mode
+    # Main Content
     view_mode = st.session_state.view_mode
     
     if view_mode == "🎯 Learning Path":
@@ -103,10 +91,8 @@ def main():
 
 def render_sidebar():
     with st.sidebar:
-        st.image("https://img.icons8.com/fluency/96/000000/code.png", width=80)
-        st.markdown("## Navigation")
+        st.markdown("## 📚 Navigation")
         
-        # View Mode Selection
         view_modes = [
             "🎯 Learning Path",
             "📋 All Problems",
@@ -116,7 +102,7 @@ def render_sidebar():
             "📊 Analytics"
         ]
         
-        selected_view = st.radio("View", view_modes, key='view_selector')
+        selected_view = st.radio("View", view_modes, label_visibility="collapsed")
         st.session_state.view_mode = selected_view
         
         st.markdown("---")
@@ -125,9 +111,8 @@ def render_sidebar():
         st.markdown("### 📈 Quick Stats")
         stats = data_manager.get_progress_stats()
         
-        # Progress bar
         st.progress(stats['completion_percentage'] / 100)
-        st.caption(f"{stats['solved_count']} of {stats['total_problems']} problems solved")
+        st.caption(f"{stats['solved_count']} of {stats['total_problems']} solved")
         
         # Difficulty breakdown
         st.markdown("#### By Difficulty")
@@ -146,39 +131,32 @@ def render_sidebar():
         
         st.markdown("---")
         
-        # Filters (show only in relevant views)
+        # Filters
         if selected_view in ["📋 All Problems", "📂 By Topic"]:
             st.markdown("### 🔍 Filters")
             
-            # Difficulty Filter
             difficulties = st.multiselect(
                 "Difficulty",
                 ['Easy', 'Medium', 'Hard'],
-                default=['Easy', 'Medium', 'Hard'],
-                key='difficulty_filter'
+                default=['Easy', 'Medium', 'Hard']
             )
             
-            # Topic Filter
             topics = st.multiselect(
                 "Topics",
                 data_manager.get_topics(),
-                default=data_manager.get_topics(),
-                key='topic_filter'
+                default=data_manager.get_topics()
             )
             
-            # Pattern Filter
             patterns = st.multiselect(
                 "Patterns",
-                data_manager.get_patterns(),
-                key='pattern_filter'
+                data_manager.get_patterns()
             )
             
-            # Status Filter
             col1, col2 = st.columns(2)
             with col1:
-                show_solved = st.checkbox("Solved", value=True, key='show_solved')
+                show_solved = st.checkbox("Solved", value=True)
             with col2:
-                show_unsolved = st.checkbox("Unsolved", value=True, key='show_unsolved')
+                show_unsolved = st.checkbox("Unsolved", value=True)
             
             st.session_state.filters = {
                 'difficulties': difficulties,
@@ -188,18 +166,6 @@ def render_sidebar():
                 'show_unsolved': show_unsolved,
                 'solved_ids': data_manager.progress['solved_problems']
             }
-        
-        st.markdown("---")
-        
-        # Export Options
-        if st.button("📥 Export Progress"):
-            csv = export_progress_to_csv(data_manager)
-            st.download_button(
-                "Download CSV",
-                csv,
-                "leetcode_progress.csv",
-                "text/csv"
-            )
 
 def show_learning_path_view():
     st.header("🎯 Structured Learning Path")
@@ -217,7 +183,10 @@ def show_learning_path_view():
         total_in_path = len(problem_ids)
         completion = (solved_in_path / total_in_path * 100) if total_in_path > 0 else 0
         
-        with st.expander(f"📚 {path_data['name']} - {solved_in_path}/{total_in_path} completed", expanded=(completion < 100)):
+        with st.expander(
+            f"📚 {path_data['name']} - {solved_in_path}/{total_in_path} completed",
+            expanded=(completion < 100)
+        ):
             st.markdown(f"*{path_data['description']}*")
             
             col1, col2 = st.columns([4, 1])
@@ -228,30 +197,26 @@ def show_learning_path_view():
             
             st.markdown("---")
             
-            for problem in problems:
-                render_problem_card(problem, data_manager)
+            for idx, problem in enumerate(problems):
+                render_problem_card(problem, context=f"lp_{path_key}_{idx}")
 
 def show_all_problems_view():
     st.header("📋 All Problems")
     
-    # Search bar
     col1, col2 = st.columns([3, 1])
     with col1:
-        search_query = st.text_input("🔎 Search problems", "", key='search_input')
+        search_query = st.text_input("🔎 Search problems", "")
     with col2:
-        sort_by = st.selectbox("Sort by", ["ID", "Difficulty", "Title"], key='sort_by')
+        sort_by = st.selectbox("Sort by", ["ID", "Difficulty", "Title"])
     
-    # Get problems
     if search_query:
         problems = data_manager.search_problems(search_query)
     else:
         problems = data_manager.get_all_problems()
     
-    # Apply filters
     if 'filters' in st.session_state:
         problems = filter_problems(problems, st.session_state.filters)
     
-    # Sort
     if sort_by == "ID":
         problems.sort(key=lambda x: x['id'])
     elif sort_by == "Difficulty":
@@ -262,20 +227,17 @@ def show_all_problems_view():
     
     st.markdown(f"**Showing {len(problems)} problems**")
     
-    for problem in problems:
-        render_problem_card(problem, data_manager)
+    for idx, problem in enumerate(problems):
+        render_problem_card(problem, context=f"all_{idx}")
 
 def show_by_topic_view():
     st.header("📂 Problems by Topic")
     
-    # Get all problems
     all_problems = data_manager.get_all_problems()
     
-    # Apply filters
     if 'filters' in st.session_state:
         all_problems = filter_problems(all_problems, st.session_state.filters)
     
-    # Group by topic
     topics = {}
     for problem in all_problems:
         topic = problem['topic']
@@ -283,7 +245,6 @@ def show_by_topic_view():
             topics[topic] = []
         topics[topic].append(problem)
     
-    # Display by topic
     solved_ids = set(data_manager.progress['solved_problems'])
     
     for topic in sorted(topics.keys()):
@@ -292,8 +253,8 @@ def show_by_topic_view():
         total_in_topic = len(topic_problems)
         
         with st.expander(f"**{topic}** - {solved_in_topic}/{total_in_topic} solved", expanded=False):
-            for problem in topic_problems:
-                render_problem_card(problem, data_manager, compact=True)
+            for idx, problem in enumerate(topic_problems):
+                render_problem_card(problem, context=f"topic_{topic}_{idx}", compact=True)
 
 def show_bookmarked_view():
     st.header("🔖 Bookmarked Problems")
@@ -301,7 +262,7 @@ def show_bookmarked_view():
     bookmarked_ids = data_manager.progress['bookmarked_problems']
     
     if not bookmarked_ids:
-        st.info("📌 No bookmarked problems yet. Bookmark important problems to review them later!")
+        st.info("📌 No bookmarked problems yet!")
         return
     
     problems = [data_manager.get_problem_by_id(pid) for pid in bookmarked_ids]
@@ -309,69 +270,49 @@ def show_bookmarked_view():
     
     st.markdown(f"**{len(problems)} bookmarked problems**")
     
-    for problem in problems:
-        render_problem_card(problem, data_manager)
+    for idx, problem in enumerate(problems):
+        render_problem_card(problem, context=f"bookmark_{idx}")
 
 def show_recommendations_view():
     st.header("💡 Recommended for You")
-    st.markdown("Based on your progress and learning path")
     
     recommended = get_recommended_problems(data_manager, data_manager.progress, limit=10)
     
     if not recommended:
-        st.success("🎉 Congratulations! You've solved all high-priority problems!")
+        st.success("🎉 You've solved all high-priority problems!")
         return
     
     st.markdown(f"**Top {len(recommended)} problems to solve next:**")
     
-    for i, problem in enumerate(recommended, 1):
-        st.markdown(f"### {i}. Recommended")
-        render_problem_card(problem, data_manager)
-        st.markdown("---")
+    for i, problem in enumerate(recommended):
+        render_problem_card(problem, context=f"rec_{i}")
 
 def show_analytics_view():
     st.header("📊 Analytics Dashboard")
     
     stats = data_manager.get_progress_stats()
     
-    # Overview Metrics
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown(style_metric_card(
-            "Total Solved",
-            str(stats['solved_count']),
-            f"+{stats['solved_count']}"
-        ), unsafe_allow_html=True)
+        st.metric("Total Solved", stats['solved_count'])
     
     with col2:
-        st.markdown(style_metric_card(
-            "Completion",
-            f"{stats['completion_percentage']:.1f}%"
-        ), unsafe_allow_html=True)
+        st.metric("Completion", f"{stats['completion_percentage']:.1f}%")
     
     with col3:
         streak = calculate_streak(data_manager.progress.get('solve_history', []))
-        st.markdown(style_metric_card(
-            "Current Streak",
-            f"{streak} days",
-            "🔥"
-        ), unsafe_allow_html=True)
+        st.metric("Streak", f"{streak} days")
     
     with col4:
         time_spent = format_time(stats['total_time_spent'])
-        st.markdown(style_metric_card(
-            "Time Spent",
-            time_spent
-        ), unsafe_allow_html=True)
+        st.metric("Time Spent", time_spent)
     
     st.markdown("---")
     
-    # Charts
     col1, col2 = st.columns(2)
     
     with col1:
-        # Difficulty Distribution
         st.subheader("📊 By Difficulty")
         diff_data = pd.DataFrame({
             'Difficulty': ['Easy', 'Medium', 'Hard'],
@@ -396,7 +337,6 @@ def show_analytics_view():
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
-        # Topic Distribution
         st.subheader("📂 By Topic")
         topic_stats = stats['topic_stats']
         
@@ -406,75 +346,41 @@ def show_analytics_view():
                 'Solved': list(topic_stats.values())
             }).sort_values('Solved', ascending=False).head(10)
             
-            fig = px.bar(
-                topic_data,
-                x='Solved',
-                y='Topic',
-                orientation='h',
-                color='Solved',
-                color_continuous_scale='Viridis'
-            )
-            fig.update_layout(showlegend=False)
+            fig = px.bar(topic_data, x='Solved', y='Topic', orientation='h')
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.info("Start solving problems to see topic distribution")
-    
-    # Progress Over Time
-    st.subheader("📈 Progress Over Time")
-    solve_history = data_manager.progress.get('solve_history', [])
-    
-    if solve_history:
-        history_df = pd.DataFrame(solve_history)
-        history_df['date'] = pd.to_datetime(history_df['timestamp']).dt.date
-        daily_solves = history_df.groupby('date').size().reset_index(name='count')
-        daily_solves['cumulative'] = daily_solves['count'].cumsum()
-        
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=daily_solves['date'],
-            y=daily_solves['cumulative'],
-            mode='lines+markers',
-            name='Cumulative Problems',
-            line=dict(color='#667eea', width=3),
-            fill='tozeroy'
-        ))
-        fig.update_layout(
-            title="Cumulative Problems Solved",
-            xaxis_title="Date",
-            yaxis_title="Problems Solved",
-            hovermode='x unified'
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.info("Start solving problems to see progress over time")
+            st.info("Start solving to see topic stats")
 
-def render_problem_card(problem, data_manager, compact=False):
-    """Render a problem card with all details"""
+def render_problem_card(problem, context="default", compact=False):
+    """Render a problem card"""
     is_solved = problem['id'] in data_manager.progress['solved_problems']
     is_bookmarked = problem['id'] in data_manager.progress['bookmarked_problems']
     
-    # Container
+    # Unique keys
+    solve_key = f"solve_{context}_{problem['id']}"
+    bookmark_key = f"bookmark_{context}_{problem['id']}"
+    
     with st.container():
-        # Header row
         col1, col2, col3, col4, col5 = st.columns([0.4, 3, 1, 0.8, 0.8])
         
         with col1:
-            if is_solved:
-                st.markdown("### ✅")
-            else:
-                st.markdown("### ⬜")
+            st.markdown("### ✅" if is_solved else "### ⬜")
         
         with col2:
-            bookmark_icon = "🔖" if is_bookmarked else ""
-            st.markdown(f"### {bookmark_icon} [{problem['id']}. {problem['title']}]({problem['link']})")
+            bookmark_icon = "🔖 " if is_bookmarked else ""
+            st.markdown(f"### {bookmark_icon}[{problem['id']}. {problem['title']}]({problem['link']})")
         
         with col3:
             emoji = get_difficulty_emoji(problem['difficulty'])
             color = get_difficulty_color(problem['difficulty'])
-            st.markdown(f"<span style='background:{color}; color:white; padding:4px 12px; border-radius:12px;'>{emoji} {problem['difficulty']}</span>", unsafe_allow_html=True)
+            st.markdown(
+                f"<span style='background:{color}; color:white; padding:4px 12px; "
+                f"border-radius:12px;'>{emoji} {problem['difficulty']}</span>",
+                unsafe_allow_html=True
+            )
         
         with col4:
-            if st.button("✓" if not is_solved else "↺", key=f"solve_{problem['id']}", help="Mark as solved/unsolved"):
+            if st.button("✓" if not is_solved else "↺", key=solve_key, help="Toggle solved"):
                 if is_solved:
                     data_manager.mark_unsolved(problem['id'])
                 else:
@@ -482,55 +388,50 @@ def render_problem_card(problem, data_manager, compact=False):
                 st.rerun()
         
         with col5:
-            if st.button("⭐" if not is_bookmarked else "★", key=f"bookmark_{problem['id']}", help="Bookmark"):
+            if st.button("⭐" if not is_bookmarked else "★", key=bookmark_key, help="Bookmark"):
                 data_manager.toggle_bookmark(problem['id'])
                 st.rerun()
         
         if not compact:
-            # Details row
             col1, col2 = st.columns([3, 1])
             
             with col1:
-                # Tags
                 st.markdown(f"**Topic:** `{problem['topic']}`")
                 patterns_html = " ".join([f"<span class='tag'>{p}</span>" for p in problem.get('patterns', [])])
                 st.markdown(f"**Patterns:** {patterns_html}", unsafe_allow_html=True)
                 
-                # Companies
                 if problem.get('companies'):
                     companies = ", ".join(problem['companies'][:5])
-                    st.caption(f"💼 Asked by: {companies}")
+                    st.caption(f"💼 {companies}")
                 
-                # Complexity
-                st.caption(f"⏱️ Time: {problem.get('time_complexity', 'N/A')} | 💾 Space: {problem.get('space_complexity', 'N/A')}")
+                st.caption(
+                    f"⏱️ {problem.get('time_complexity', 'N/A')} | "
+                    f"💾 {problem.get('space_complexity', 'N/A')}"
+                )
             
             with col2:
-                st.markdown(f"**Importance:** {get_importance_stars(problem['importance'])}")
+                st.markdown(f"**{get_importance_stars(problem['importance'])}**")
             
-            # Hints (expandable)
             if problem.get('hints'):
                 with st.expander("💡 Hints"):
                     for i, hint in enumerate(problem['hints'], 1):
                         st.markdown(f"{i}. {hint}")
             
-            # Notes section
             with st.expander("📝 My Notes"):
+                note_key = f"note_{context}_{problem['id']}"
+                save_key = f"save_{context}_{problem['id']}"
+                
                 note = data_manager.get_note(problem['id'])
                 new_note = st.text_area(
-                    "Add your notes, approach, or learnings",
+                    "Notes",
                     value=note,
-                    key=f"note_{problem['id']}",
-                    height=100
+                    key=note_key,
+                    height=100,
+                    label_visibility="collapsed"
                 )
-                if st.button("Save Note", key=f"save_note_{problem['id']}"):
+                if st.button("Save Note", key=save_key):
                     data_manager.save_note(problem['id'], new_note)
-                    st.success("Note saved!")
-            
-            # Related problems
-            if problem.get('related_problems'):
-                related_ids = problem['related_problems']
-                related_titles = [data_manager.get_problem_by_id(rid)['title'] if data_manager.get_problem_by_id(rid) else f"#{rid}" for rid in related_ids]
-                st.caption(f"🔗 Related: {', '.join(related_titles)}")
+                    st.success("Saved!")
         
         st.markdown("---")
 

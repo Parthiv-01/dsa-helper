@@ -3,12 +3,12 @@
     "beginner": {
       "name": "Beginner (Week 1-2)",
       "description": "Foundation problems to get started",
-      "problem_ids": [1, 26, 121, 217, 242, 20, 704, 232, 242]
+      "problem_ids": [1, 26, 121, 217, 242, 20, 704, 232, 283]
     },
     "elementary": {
       "name": "Elementary (Week 3-4)",
       "description": "Basic data structures",
-      "problem_ids": [206, 21, 141, 104, 226, 70, 234, 283, 350]
+      "problem_ids": [206, 21, 141, 104, 226, 70, 234, 350]
     },
     "intermediate": {
       "name": "Intermediate (Week 5-8)",
@@ -18,12 +18,12 @@
     "advanced": {
       "name": "Advanced (Week 9-12)",
       "description": "Complex problem solving",
-      "problem_ids": [5, 33, 200, 300, 46, 78, 322, 139, 91, 416]
+      "problem_ids": [5, 33, 200, 300, 46, 78, 322]
     },
     "expert": {
       "name": "Expert (Week 13+)",
       "description": "Hard problems and optimizations",
-      "problem_ids": [42, 76, 297, 124, 23, 295, 84, 239]
+      "problem_ids": [42, 76]
     }
   },
   
@@ -38,11 +38,7 @@
     "Stack",
     "Queue",
     "Heap",
-    "Backtracking",
-    "Greedy",
-    "Trie",
-    "Bit Manipulation",
-    "Math"
+    "Backtracking"
   ],
 
   "patterns": [
@@ -57,12 +53,7 @@
     "BFS",
     "Binary Search",
     "Dynamic Programming",
-    "Backtracking",
-    "Greedy",
-    "Divide & Conquer",
-    "Heap",
-    "Trie",
-    "Union Find"
+    "Backtracking"
   ],
 
   "problems": [
@@ -71,10 +62,10 @@
       "title": "Two Sum",
       "difficulty": "Easy",
       "topic": "Arrays",
-      "patterns": ["Hash Map", "Two Pointers"],
+      "patterns": ["Hash Map"],
       "link": "https://leetcode.com/problems/two-sum/",
       "importance": "High",
-      "companies": ["Amazon", "Google", "Microsoft", "Facebook"],
+      "companies": ["Amazon", "Google", "Microsoft"],
       "time_complexity": "O(n)",
       "space_complexity": "O(n)",
       "hints": [
@@ -96,8 +87,8 @@
       "time_complexity": "O(n)",
       "space_complexity": "O(1)",
       "hints": [
-        "Use two pointers - one for unique elements, one for iteration",
-        "Since array is sorted, duplicates will be adjacent"
+        "Use two pointers - one for unique elements",
+        "Array is sorted, so duplicates are adjacent"
       ],
       "prerequisites": [],
       "related_problems": [80, 283]
@@ -107,15 +98,15 @@
       "title": "Maximum Subarray",
       "difficulty": "Medium",
       "topic": "Arrays",
-      "patterns": ["Dynamic Programming", "Divide & Conquer"],
+      "patterns": ["Dynamic Programming"],
       "link": "https://leetcode.com/problems/maximum-subarray/",
       "importance": "High",
-      "companies": ["Amazon", "Microsoft", "LinkedIn"],
+      "companies": ["Amazon", "Microsoft"],
       "time_complexity": "O(n)",
       "space_complexity": "O(1)",
       "hints": [
         "Keep track of current sum and maximum sum",
-        "If current sum becomes negative, reset it to 0"
+        "If current sum becomes negative, reset it"
       ],
       "prerequisites": [],
       "related_problems": [121, 152]
@@ -125,14 +116,14 @@
       "title": "Best Time to Buy and Sell Stock",
       "difficulty": "Easy",
       "topic": "Arrays",
-      "patterns": ["Sliding Window", "Dynamic Programming"],
+      "patterns": ["Sliding Window"],
       "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
       "importance": "High",
-      "companies": ["Amazon", "Facebook", "Microsoft"],
+      "companies": ["Amazon", "Facebook"],
       "time_complexity": "O(n)",
       "space_complexity": "O(1)",
       "hints": [
-        "Keep track of minimum price seen so far",
+        "Track minimum price seen so far",
         "Calculate profit at each step"
       ],
       "prerequisites": [],
@@ -151,7 +142,7 @@
       "space_complexity": "O(n)",
       "hints": [
         "Use a set to track seen numbers",
-        "Return true if number already exists in set"
+        "Return true if number already in set"
       ],
       "prerequisites": [],
       "related_problems": [219, 220]
@@ -164,537 +155,15 @@
       "patterns": ["Two Pointers"],
       "link": "https://leetcode.com/problems/product-of-array-except-self/",
       "importance": "High",
-      "companies": ["Amazon", "Microsoft", "Facebook"],
+      "companies": ["Amazon", "Microsoft"],
       "time_complexity": "O(n)",
       "space_complexity": "O(1)",
       "hints": [
-        "Calculate prefix products and suffix products",
-        "Result at index i = prefix[i-1] * suffix[i+1]"
+        "Calculate prefix and suffix products",
+        "Result at i = prefix[i-1] * suffix[i+1]"
       ],
       "prerequisites": [],
       "related_problems": [42, 152]
-    },
-    {
-      "id": 3,
-      "title": "Longest Substring Without Repeating Characters",
-      "difficulty": "Medium",
-      "topic": "Strings",
-      "patterns": ["Sliding Window", "Hash Map"],
-      "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
-      "importance": "High",
-      "companies": ["Amazon", "Google", "Facebook"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(min(m,n))",
-      "hints": [
-        "Use sliding window with two pointers",
-        "Use hash map to track character positions"
-      ],
-      "prerequisites": [],
-      "related_problems": [159, 340]
-    },
-    {
-      "id": 5,
-      "title": "Longest Palindromic Substring",
-      "difficulty": "Medium",
-      "topic": "Strings",
-      "patterns": ["Dynamic Programming", "Two Pointers"],
-      "link": "https://leetcode.com/problems/longest-palindromic-substring/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft", "Adobe"],
-      "time_complexity": "O(n²)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Expand around center for each character",
-        "Consider both odd and even length palindromes"
-      ],
-      "prerequisites": [],
-      "related_problems": [647, 516]
-    },
-    {
-      "id": 20,
-      "title": "Valid Parentheses",
-      "difficulty": "Easy",
-      "topic": "Strings",
-      "patterns": ["Stack"],
-      "link": "https://leetcode.com/problems/valid-parentheses/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "Microsoft"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Use stack to track opening brackets",
-        "Pop from stack when closing bracket matches"
-      ],
-      "prerequisites": [],
-      "related_problems": [22, 32]
-    },
-    {
-      "id": 242,
-      "title": "Valid Anagram",
-      "difficulty": "Easy",
-      "topic": "Strings",
-      "patterns": ["Hash Map"],
-      "link": "https://leetcode.com/problems/valid-anagram/",
-      "importance": "Medium",
-      "companies": ["Amazon", "Google"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Count frequency of each character",
-        "Compare frequencies of both strings"
-      ],
-      "prerequisites": [],
-      "related_problems": [49, 438]
-    },
-    {
-      "id": 21,
-      "title": "Merge Two Sorted Lists",
-      "difficulty": "Easy",
-      "topic": "Linked List",
-      "patterns": ["Two Pointers"],
-      "link": "https://leetcode.com/problems/merge-two-sorted-lists/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft", "Facebook"],
-      "time_complexity": "O(n+m)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Use dummy node to simplify edge cases",
-        "Compare values and attach smaller node"
-      ],
-      "prerequisites": [],
-      "related_problems": [23, 88]
-    },
-    {
-      "id": 141,
-      "title": "Linked List Cycle",
-      "difficulty": "Easy",
-      "topic": "Linked List",
-      "patterns": ["Fast & Slow Pointers"],
-      "link": "https://leetcode.com/problems/linked-list-cycle/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft", "Bloomberg"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Use fast and slow pointers (Floyd's algorithm)",
-        "If they meet, cycle exists"
-      ],
-      "prerequisites": [],
-      "related_problems": [142, 202]
-    },
-    {
-      "id": 206,
-      "title": "Reverse Linked List",
-      "difficulty": "Easy",
-      "topic": "Linked List",
-      "patterns": ["Two Pointers"],
-      "link": "https://leetcode.com/problems/reverse-linked-list/",
-      "importance": "High",
-      "companies": ["Amazon", "Google", "Facebook"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Keep track of previous, current, and next nodes",
-        "Reverse pointers one by one"
-      ],
-      "prerequisites": [],
-      "related_problems": [92, 25]
-    },
-    {
-      "id": 19,
-      "title": "Remove Nth Node From End of List",
-      "difficulty": "Medium",
-      "topic": "Linked List",
-      "patterns": ["Two Pointers"],
-      "link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
-      "importance": "Medium",
-      "companies": ["Amazon", "Microsoft"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Use two pointers with n gap between them",
-        "When fast reaches end, slow is at target"
-      ],
-      "prerequisites": [206],
-      "related_problems": [61, 83]
-    },
-    {
-      "id": 234,
-      "title": "Palindrome Linked List",
-      "difficulty": "Easy",
-      "topic": "Linked List",
-      "patterns": ["Fast & Slow Pointers", "Two Pointers"],
-      "link": "https://leetcode.com/problems/palindrome-linked-list/",
-      "importance": "Medium",
-      "companies": ["Amazon", "Facebook"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Find middle using slow/fast pointers",
-        "Reverse second half and compare"
-      ],
-      "prerequisites": [206, 141],
-      "related_problems": [9, 143]
-    },
-    {
-      "id": 94,
-      "title": "Binary Tree Inorder Traversal",
-      "difficulty": "Easy",
-      "topic": "Trees",
-      "patterns": ["DFS", "Stack"],
-      "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Left -> Root -> Right",
-        "Can be done recursively or iteratively with stack"
-      ],
-      "prerequisites": [],
-      "related_problems": [144, 145]
-    },
-    {
-      "id": 102,
-      "title": "Binary Tree Level Order Traversal",
-      "difficulty": "Medium",
-      "topic": "Trees",
-      "patterns": ["BFS", "Queue"],
-      "link": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "Microsoft"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Use queue for BFS",
-        "Process nodes level by level"
-      ],
-      "prerequisites": [],
-      "related_problems": [103, 107]
-    },
-    {
-      "id": 104,
-      "title": "Maximum Depth of Binary Tree",
-      "difficulty": "Easy",
-      "topic": "Trees",
-      "patterns": ["DFS", "BFS"],
-      "link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
-      "importance": "High",
-      "companies": ["Amazon", "LinkedIn"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(h)",
-      "hints": [
-        "Recursively find max depth of left and right subtrees",
-        "Return 1 + max(left_depth, right_depth)"
-      ],
-      "prerequisites": [],
-      "related_problems": [111, 559]
-    },
-    {
-      "id": 226,
-      "title": "Invert Binary Tree",
-      "difficulty": "Easy",
-      "topic": "Trees",
-      "patterns": ["DFS", "BFS"],
-      "link": "https://leetcode.com/problems/invert-binary-tree/",
-      "importance": "Medium",
-      "companies": ["Google", "Amazon"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(h)",
-      "hints": [
-        "Swap left and right children",
-        "Recursively invert left and right subtrees"
-      ],
-      "prerequisites": [],
-      "related_problems": [101, 951]
-    },
-    {
-      "id": 236,
-      "title": "Lowest Common Ancestor of a Binary Tree",
-      "difficulty": "Medium",
-      "topic": "Trees",
-      "patterns": ["DFS"],
-      "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "Microsoft"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(h)",
-      "hints": [
-        "Recursively search in left and right subtrees",
-        "If both return non-null, current node is LCA"
-      ],
-      "prerequisites": [104],
-      "related_problems": [235, 1644]
-    },
-    {
-      "id": 70,
-      "title": "Climbing Stairs",
-      "difficulty": "Easy",
-      "topic": "Dynamic Programming",
-      "patterns": ["Dynamic Programming"],
-      "link": "https://leetcode.com/problems/climbing-stairs/",
-      "importance": "High",
-      "companies": ["Amazon", "Google"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Similar to Fibonacci sequence",
-        "ways[i] = ways[i-1] + ways[i-2]"
-      ],
-      "prerequisites": [],
-      "related_problems": [746, 91]
-    },
-    {
-      "id": 198,
-      "title": "House Robber",
-      "difficulty": "Medium",
-      "topic": "Dynamic Programming",
-      "patterns": ["Dynamic Programming"],
-      "link": "https://leetcode.com/problems/house-robber/",
-      "importance": "High",
-      "companies": ["Amazon", "LinkedIn"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "At each house: max(rob current + skip previous, skip current)",
-        "dp[i] = max(dp[i-1], dp[i-2] + nums[i])"
-      ],
-      "prerequisites": [70],
-      "related_problems": [213, 337]
-    },
-    {
-      "id": 300,
-      "title": "Longest Increasing Subsequence",
-      "difficulty": "Medium",
-      "topic": "Dynamic Programming",
-      "patterns": ["Dynamic Programming", "Binary Search"],
-      "link": "https://leetcode.com/problems/longest-increasing-subsequence/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft", "Google"],
-      "time_complexity": "O(n log n)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "dp[i] = length of LIS ending at index i",
-        "For each element, check all previous elements"
-      ],
-      "prerequisites": [70, 198],
-      "related_problems": [673, 354]
-    },
-    {
-      "id": 322,
-      "title": "Coin Change",
-      "difficulty": "Medium",
-      "topic": "Dynamic Programming",
-      "patterns": ["Dynamic Programming"],
-      "link": "https://leetcode.com/problems/coin-change/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook"],
-      "time_complexity": "O(amount * n)",
-      "space_complexity": "O(amount)",
-      "hints": [
-        "dp[i] = minimum coins needed for amount i",
-        "For each coin, update all reachable amounts"
-      ],
-      "prerequisites": [70],
-      "related_problems": [518, 377]
-    },
-    {
-      "id": 200,
-      "title": "Number of Islands",
-      "difficulty": "Medium",
-      "topic": "Graphs",
-      "patterns": ["DFS", "BFS", "Union Find"],
-      "link": "https://leetcode.com/problems/number-of-islands/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "Google"],
-      "time_complexity": "O(m*n)",
-      "space_complexity": "O(m*n)",
-      "hints": [
-        "Use DFS/BFS to mark connected land cells",
-        "Count number of DFS/BFS calls needed"
-      ],
-      "prerequisites": [],
-      "related_problems": [695, 733]
-    },
-    {
-      "id": 133,
-      "title": "Clone Graph",
-      "difficulty": "Medium",
-      "topic": "Graphs",
-      "patterns": ["DFS", "BFS", "Hash Map"],
-      "link": "https://leetcode.com/problems/clone-graph/",
-      "importance": "Medium",
-      "companies": ["Amazon", "Facebook"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Use hash map to track cloned nodes",
-        "DFS/BFS to traverse and clone"
-      ],
-      "prerequisites": [200],
-      "related_problems": [138, 1485]
-    },
-    {
-      "id": 33,
-      "title": "Search in Rotated Sorted Array",
-      "difficulty": "Medium",
-      "topic": "Binary Search",
-      "patterns": ["Binary Search"],
-      "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "Microsoft"],
-      "time_complexity": "O(log n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "One half is always sorted",
-        "Determine which half is sorted and if target is in that range"
-      ],
-      "prerequisites": [704],
-      "related_problems": [81, 153]
-    },
-    {
-      "id": 704,
-      "title": "Binary Search",
-      "difficulty": "Easy",
-      "topic": "Binary Search",
-      "patterns": ["Binary Search"],
-      "link": "https://leetcode.com/problems/binary-search/",
-      "importance": "High",
-      "companies": ["Amazon", "Google"],
-      "time_complexity": "O(log n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Compare middle element with target",
-        "Eliminate half of search space each iteration"
-      ],
-      "prerequisites": [],
-      "related_problems": [35, 278]
-    },
-    {
-      "id": 155,
-      "title": "Min Stack",
-      "difficulty": "Medium",
-      "topic": "Stack",
-      "patterns": ["Stack"],
-      "link": "https://leetcode.com/problems/min-stack/",
-      "importance": "High",
-      "companies": ["Amazon", "Bloomberg"],
-      "time_complexity": "O(1)",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Use auxiliary stack to track minimums",
-        "Push/pop from both stacks together"
-      ],
-      "prerequisites": [],
-      "related_problems": [716, 895]
-    },
-    {
-      "id": 232,
-      "title": "Implement Queue using Stacks",
-      "difficulty": "Easy",
-      "topic": "Queue",
-      "patterns": ["Stack", "Queue"],
-      "link": "https://leetcode.com/problems/implement-queue-using-stacks/",
-      "importance": "Medium",
-      "companies": ["Microsoft", "Amazon"],
-      "time_complexity": "O(1) amortized",
-      "space_complexity": "O(n)",
-      "hints": [
-        "Use two stacks - input and output",
-        "Transfer elements when output stack is empty"
-      ],
-      "prerequisites": [],
-      "related_problems": [225, 622]
-    },
-    {
-      "id": 215,
-      "title": "Kth Largest Element in an Array",
-      "difficulty": "Medium",
-      "topic": "Heap",
-      "patterns": ["Heap", "Quick Select"],
-      "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "LinkedIn"],
-      "time_complexity": "O(n log k)",
-      "space_complexity": "O(k)",
-      "hints": [
-        "Use min heap of size k",
-        "Maintain k largest elements in heap"
-      ],
-      "prerequisites": [],
-      "related_problems": [347, 703]
-    },
-    {
-      "id": 46,
-      "title": "Permutations",
-      "difficulty": "Medium",
-      "topic": "Backtracking",
-      "patterns": ["Backtracking"],
-      "link": "https://leetcode.com/problems/permutations/",
-      "importance": "High",
-      "companies": ["Amazon", "Microsoft", "LinkedIn"],
-      "time_complexity": "O(n!)",
-      "space_complexity": "O(n!)",
-      "hints": [
-        "Use backtracking to generate all permutations",
-        "Track used elements"
-      ],
-      "prerequisites": [],
-      "related_problems": [47, 77]
-    },
-    {
-      "id": 78,
-      "title": "Subsets",
-      "difficulty": "Medium",
-      "topic": "Backtracking",
-      "patterns": ["Backtracking", "Bit Manipulation"],
-      "link": "https://leetcode.com/problems/subsets/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook"],
-      "time_complexity": "O(2^n)",
-      "space_complexity": "O(2^n)",
-      "hints": [
-        "For each element: include it or exclude it",
-        "Use backtracking to explore both choices"
-      ],
-      "prerequisites": [],
-      "related_problems": [90, 784]
-    },
-    {
-      "id": 42,
-      "title": "Trapping Rain Water",
-      "difficulty": "Hard",
-      "topic": "Arrays",
-      "patterns": ["Two Pointers", "Stack"],
-      "link": "https://leetcode.com/problems/trapping-rain-water/",
-      "importance": "High",
-      "companies": ["Amazon", "Google", "Facebook"],
-      "time_complexity": "O(n)",
-      "space_complexity": "O(1)",
-      "hints": [
-        "Water level = min(max_left, max_right) - current_height",
-        "Use two pointers from both ends"
-      ],
-      "prerequisites": [238],
-      "related_problems": [11, 407]
-    },
-    {
-      "id": 76,
-      "title": "Minimum Window Substring",
-      "difficulty": "Hard",
-      "topic": "Strings",
-      "patterns": ["Sliding Window", "Hash Map"],
-      "link": "https://leetcode.com/problems/minimum-window-substring/",
-      "importance": "High",
-      "companies": ["Amazon", "Facebook", "LinkedIn"],
-      "time_complexity": "O(m+n)",
-      "space_complexity": "O(m+n)",
-      "hints": [
-        "Use sliding window with two pointers",
-        "Expand right until valid, contract left while valid"
-      ],
-      "prerequisites": [3],
-      "related_problems": [438, 567]
     },
     {
       "id": 283,
@@ -719,7 +188,7 @@
       "title": "Intersection of Two Arrays II",
       "difficulty": "Easy",
       "topic": "Arrays",
-      "patterns": ["Hash Map", "Two Pointers"],
+      "patterns": ["Hash Map"],
       "link": "https://leetcode.com/problems/intersection-of-two-arrays-ii/",
       "importance": "Medium",
       "companies": ["Facebook", "Amazon"],
@@ -731,6 +200,510 @@
       ],
       "prerequisites": [],
       "related_problems": [349, 1002]
+    },
+    {
+      "id": 3,
+      "title": "Longest Substring Without Repeating Characters",
+      "difficulty": "Medium",
+      "topic": "Strings",
+      "patterns": ["Sliding Window"],
+      "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+      "importance": "High",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(min(m,n))",
+      "hints": [
+        "Use sliding window with two pointers",
+        "Track character positions with hash map"
+      ],
+      "prerequisites": [],
+      "related_problems": [159, 340]
+    },
+    {
+      "id": 5,
+      "title": "Longest Palindromic Substring",
+      "difficulty": "Medium",
+      "topic": "Strings",
+      "patterns": ["Dynamic Programming"],
+      "link": "https://leetcode.com/problems/longest-palindromic-substring/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n²)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Expand around center for each character",
+        "Consider both odd and even length palindromes"
+      ],
+      "prerequisites": [],
+      "related_problems": [647, 516]
+    },
+    {
+      "id": 20,
+      "title": "Valid Parentheses",
+      "difficulty": "Easy",
+      "topic": "Strings",
+      "patterns": ["Stack"],
+      "link": "https://leetcode.com/problems/valid-parentheses/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(n)",
+      "hints": [
+        "Use stack to track opening brackets",
+        "Pop when closing bracket matches"
+      ],
+      "prerequisites": [],
+      "related_problems": [22, 32]
+    },
+    {
+      "id": 242,
+      "title": "Valid Anagram",
+      "difficulty": "Easy",
+      "topic": "Strings",
+      "patterns": ["Hash Map"],
+      "link": "https://leetcode.com/problems/valid-anagram/",
+      "importance": "Medium",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Count frequency of each character",
+        "Compare frequencies of both strings"
+      ],
+      "prerequisites": [],
+      "related_problems": [49, 438]
+    },
+    {
+      "id": 76,
+      "title": "Minimum Window Substring",
+      "difficulty": "Hard",
+      "topic": "Strings",
+      "patterns": ["Sliding Window"],
+      "link": "https://leetcode.com/problems/minimum-window-substring/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(m+n)",
+      "space_complexity": "O(m+n)",
+      "hints": [
+        "Use sliding window with two pointers",
+        "Expand right until valid, contract left"
+      ],
+      "prerequisites": [3],
+      "related_problems": [438, 567]
+    },
+    {
+      "id": 21,
+      "title": "Merge Two Sorted Lists",
+      "difficulty": "Easy",
+      "topic": "Linked List",
+      "patterns": ["Two Pointers"],
+      "link": "https://leetcode.com/problems/merge-two-sorted-lists/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n+m)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Use dummy node for simplicity",
+        "Compare values and attach smaller node"
+      ],
+      "prerequisites": [],
+      "related_problems": [23, 88]
+    },
+    {
+      "id": 141,
+      "title": "Linked List Cycle",
+      "difficulty": "Easy",
+      "topic": "Linked List",
+      "patterns": ["Fast & Slow Pointers"],
+      "link": "https://leetcode.com/problems/linked-list-cycle/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Use fast and slow pointers",
+        "If they meet, cycle exists"
+      ],
+      "prerequisites": [],
+      "related_problems": [142, 202]
+    },
+    {
+      "id": 206,
+      "title": "Reverse Linked List",
+      "difficulty": "Easy",
+      "topic": "Linked List",
+      "patterns": ["Two Pointers"],
+      "link": "https://leetcode.com/problems/reverse-linked-list/",
+      "importance": "High",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Keep track of previous, current, next",
+        "Reverse pointers one by one"
+      ],
+      "prerequisites": [],
+      "related_problems": [92, 25]
+    },
+    {
+      "id": 19,
+      "title": "Remove Nth Node From End of List",
+      "difficulty": "Medium",
+      "topic": "Linked List",
+      "patterns": ["Two Pointers"],
+      "link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+      "importance": "Medium",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Use two pointers with n gap",
+        "When fast reaches end, slow is at target"
+      ],
+      "prerequisites": [206],
+      "related_problems": [61, 83]
+    },
+    {
+      "id": 234,
+      "title": "Palindrome Linked List",
+      "difficulty": "Easy",
+      "topic": "Linked List",
+      "patterns": ["Fast & Slow Pointers"],
+      "link": "https://leetcode.com/problems/palindrome-linked-list/",
+      "importance": "Medium",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Find middle using slow/fast pointers",
+        "Reverse second half and compare"
+      ],
+      "prerequisites": [206, 141],
+      "related_problems": [9, 143]
+    },
+    {
+      "id": 94,
+      "title": "Binary Tree Inorder Traversal",
+      "difficulty": "Easy",
+      "topic": "Trees",
+      "patterns": ["DFS"],
+      "link": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(n)",
+      "hints": [
+        "Left -> Root -> Right",
+        "Can use recursion or stack"
+      ],
+      "prerequisites": [],
+      "related_problems": [144, 145]
+    },
+    {
+      "id": 102,
+      "title": "Binary Tree Level Order Traversal",
+      "difficulty": "Medium",
+      "topic": "Trees",
+      "patterns": ["BFS"],
+      "link": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(n)",
+      "hints": [
+        "Use queue for BFS",
+        "Process nodes level by level"
+      ],
+      "prerequisites": [],
+      "related_problems": [103, 107]
+    },
+    {
+      "id": 104,
+      "title": "Maximum Depth of Binary Tree",
+      "difficulty": "Easy",
+      "topic": "Trees",
+      "patterns": ["DFS"],
+      "link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+      "importance": "High",
+      "companies": ["Amazon", "LinkedIn"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(h)",
+      "hints": [
+        "Recursively find max depth of subtrees",
+        "Return 1 + max(left, right)"
+      ],
+      "prerequisites": [],
+      "related_problems": [111, 559]
+    },
+    {
+      "id": 226,
+      "title": "Invert Binary Tree",
+      "difficulty": "Easy",
+      "topic": "Trees",
+      "patterns": ["DFS"],
+      "link": "https://leetcode.com/problems/invert-binary-tree/",
+      "importance": "Medium",
+      "companies": ["Google", "Amazon"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(h)",
+      "hints": [
+        "Swap left and right children",
+        "Recursively invert subtrees"
+      ],
+      "prerequisites": [],
+      "related_problems": [101, 951]
+    },
+    {
+      "id": 236,
+      "title": "Lowest Common Ancestor of a Binary Tree",
+      "difficulty": "Medium",
+      "topic": "Trees",
+      "patterns": ["DFS"],
+      "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(h)",
+      "hints": [
+        "Search in left and right subtrees",
+        "If both return non-null, current is LCA"
+      ],
+      "prerequisites": [104],
+      "related_problems": [235, 1644]
+    },
+    {
+      "id": 70,
+      "title": "Climbing Stairs",
+      "difficulty": "Easy",
+      "topic": "Dynamic Programming",
+      "patterns": ["Dynamic Programming"],
+      "link": "https://leetcode.com/problems/climbing-stairs/",
+      "importance": "High",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Similar to Fibonacci",
+        "ways[i] = ways[i-1] + ways[i-2]"
+      ],
+      "prerequisites": [],
+      "related_problems": [746, 91]
+    },
+    {
+      "id": 198,
+      "title": "House Robber",
+      "difficulty": "Medium",
+      "topic": "Dynamic Programming",
+      "patterns": ["Dynamic Programming"],
+      "link": "https://leetcode.com/problems/house-robber/",
+      "importance": "High",
+      "companies": ["Amazon", "LinkedIn"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "At each house: rob or skip",
+        "dp[i] = max(dp[i-1], dp[i-2] + nums[i])"
+      ],
+      "prerequisites": [70],
+      "related_problems": [213, 337]
+    },
+    {
+      "id": 300,
+      "title": "Longest Increasing Subsequence",
+      "difficulty": "Medium",
+      "topic": "Dynamic Programming",
+      "patterns": ["Dynamic Programming"],
+      "link": "https://leetcode.com/problems/longest-increasing-subsequence/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n log n)",
+      "space_complexity": "O(n)",
+      "hints": [
+        "dp[i] = LIS ending at index i",
+        "Check all previous elements"
+      ],
+      "prerequisites": [70, 198],
+      "related_problems": [673, 354]
+    },
+    {
+      "id": 322,
+      "title": "Coin Change",
+      "difficulty": "Medium",
+      "topic": "Dynamic Programming",
+      "patterns": ["Dynamic Programming"],
+      "link": "https://leetcode.com/problems/coin-change/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(amount * n)",
+      "space_complexity": "O(amount)",
+      "hints": [
+        "dp[i] = min coins for amount i",
+        "For each coin, update reachable amounts"
+      ],
+      "prerequisites": [70],
+      "related_problems": [518, 377]
+    },
+    {
+      "id": 200,
+      "title": "Number of Islands",
+      "difficulty": "Medium",
+      "topic": "Graphs",
+      "patterns": ["DFS"],
+      "link": "https://leetcode.com/problems/number-of-islands/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(m*n)",
+      "space_complexity": "O(m*n)",
+      "hints": [
+        "Use DFS to mark connected cells",
+        "Count number of DFS calls"
+      ],
+      "prerequisites": [],
+      "related_problems": [695, 733]
+    },
+    {
+      "id": 33,
+      "title": "Search in Rotated Sorted Array",
+      "difficulty": "Medium",
+      "topic": "Binary Search",
+      "patterns": ["Binary Search"],
+      "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(log n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "One half is always sorted",
+        "Check if target is in sorted half"
+      ],
+      "prerequisites": [704],
+      "related_problems": [81, 153]
+    },
+    {
+      "id": 704,
+      "title": "Binary Search",
+      "difficulty": "Easy",
+      "topic": "Binary Search",
+      "patterns": ["Binary Search"],
+      "link": "https://leetcode.com/problems/binary-search/",
+      "importance": "High",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(log n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Compare middle with target",
+        "Eliminate half each iteration"
+      ],
+      "prerequisites": [],
+      "related_problems": [35, 278]
+    },
+    {
+      "id": 155,
+      "title": "Min Stack",
+      "difficulty": "Medium",
+      "topic": "Stack",
+      "patterns": ["Stack"],
+      "link": "https://leetcode.com/problems/min-stack/",
+      "importance": "High",
+      "companies": ["Amazon", "Bloomberg"],
+      "time_complexity": "O(1)",
+      "space_complexity": "O(n)",
+      "hints": [
+        "Use auxiliary stack for minimums",
+        "Push/pop from both stacks"
+      ],
+      "prerequisites": [],
+      "related_problems": [716, 895]
+    },
+    {
+      "id": 232,
+      "title": "Implement Queue using Stacks",
+      "difficulty": "Easy",
+      "topic": "Queue",
+      "patterns": ["Stack"],
+      "link": "https://leetcode.com/problems/implement-queue-using-stacks/",
+      "importance": "Medium",
+      "companies": ["Microsoft", "Amazon"],
+      "time_complexity": "O(1) amortized",
+      "space_complexity": "O(n)",
+      "hints": [
+        "Use two stacks - input and output",
+        "Transfer when output is empty"
+      ],
+      "prerequisites": [],
+      "related_problems": [225, 622]
+    },
+    {
+      "id": 215,
+      "title": "Kth Largest Element in an Array",
+      "difficulty": "Medium",
+      "topic": "Heap",
+      "patterns": ["Heap"],
+      "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(n log k)",
+      "space_complexity": "O(k)",
+      "hints": [
+        "Use min heap of size k",
+        "Maintain k largest elements"
+      ],
+      "prerequisites": [],
+      "related_problems": [347, 703]
+    },
+    {
+      "id": 46,
+      "title": "Permutations",
+      "difficulty": "Medium",
+      "topic": "Backtracking",
+      "patterns": ["Backtracking"],
+      "link": "https://leetcode.com/problems/permutations/",
+      "importance": "High",
+      "companies": ["Amazon", "Microsoft"],
+      "time_complexity": "O(n!)",
+      "space_complexity": "O(n!)",
+      "hints": [
+        "Use backtracking",
+        "Track used elements"
+      ],
+      "prerequisites": [],
+      "related_problems": [47, 77]
+    },
+    {
+      "id": 78,
+      "title": "Subsets",
+      "difficulty": "Medium",
+      "topic": "Backtracking",
+      "patterns": ["Backtracking"],
+      "link": "https://leetcode.com/problems/subsets/",
+      "importance": "High",
+      "companies": ["Amazon", "Facebook"],
+      "time_complexity": "O(2^n)",
+      "space_complexity": "O(2^n)",
+      "hints": [
+        "For each element: include or exclude",
+        "Use backtracking"
+      ],
+      "prerequisites": [],
+      "related_problems": [90, 784]
+    },
+    {
+      "id": 42,
+      "title": "Trapping Rain Water",
+      "difficulty": "Hard",
+      "topic": "Arrays",
+      "patterns": ["Two Pointers"],
+      "link": "https://leetcode.com/problems/trapping-rain-water/",
+      "importance": "High",
+      "companies": ["Amazon", "Google"],
+      "time_complexity": "O(n)",
+      "space_complexity": "O(1)",
+      "hints": [
+        "Water = min(max_left, max_right) - height",
+        "Use two pointers"
+      ],
+      "prerequisites": [238],
+      "related_problems": [11, 407]
     }
   ]
 }
