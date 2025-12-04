@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from data_manager import DataManager
 from utils import *
 from datetime import datetime
+import uuid
 
 # Page Configuration
 st.set_page_config(
